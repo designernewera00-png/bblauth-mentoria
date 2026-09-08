@@ -1742,7 +1742,9 @@ b {
   }
 
   .s1__titulo {
-    font-size: 28px;
+    /* fluido: evita a quebra em 8 linhas abaixo de 380px, onde o titulo
+       subia para cima do card do fundo. Em 390px+ resolve para 28px. */
+    font-size: clamp(24px, 7.2vw, 28px);
     line-height: 1.2;
   }
   .s1__sub {
