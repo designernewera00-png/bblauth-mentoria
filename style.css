@@ -1731,6 +1731,10 @@ b {
     padding-bottom: 56px;
   }
 
+  .container {
+margin-top: -20px;
+  }
+
   .s1__bg {
     object-position: top center;
   }
