@@ -286,7 +286,7 @@ b {
 .s1__box {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
   width: 594px;
   max-width: 100%;
 }
@@ -1731,10 +1731,6 @@ b {
     padding-bottom: 56px;
   }
 
-  .container {
-margin-top: -20px;
-  }
-
   .s1__bg {
     object-position: top center;
   }
@@ -1742,6 +1738,7 @@ margin-top: -20px;
   .s1__box {
     width: 100%;
     text-align: center;
+    justify-content: flex-end;
   }
 
   .s1__titulo {
