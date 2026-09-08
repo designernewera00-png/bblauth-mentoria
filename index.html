@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentoria Abdômen Lucrativo | Bruna Blauth</title>
+  <meta name="description" content="A Mentoria Abdômen Lucrativo transforma a reabilitação abdominal na linha de lucro mais previsível da sua clínica e coloca R$10.000 no seu caixa nos primeiros 30 dias.">
+
+  <link rel="icon" href="Assets/logo/logo-bruna-blauth.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Gelasio:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    /* Marca que as animações vão rodar, pra o CSS já esconder os elementos
+       animados e evitar o "pisca". O script.js remove essa classe se o GSAP
+       não carregar — assim o conteúdo nunca fica preso invisível. */
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('anim');
+      /* rede de segurança: se o script.js não assumir em 4s (CDN fora do ar,
+         erro de rede), libera tudo pra página nunca ficar em branco */
+      setTimeout(function () {
+        if (!window.__animAtiva) document.documentElement.classList.remove('anim');
+      }, 4000);
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="site">
+
+    <!-- ==================================================================
+       SECTION 1 — HERO
+       ================================================================== -->
+    <section class="s1" id="hero">
+      <picture>
+        <source media="(max-width: 768px)" srcset="Assets/images/hero-mobile.webp">
+        <img class="s1__bg" src="Assets/images/img-fundo-bblauth.webp" alt="" aria-hidden="true" fetchpriority="high">
+      </picture>
+
+      <div class="container">
+        <div class="s1__box" data-anim-hero>
+          <div class="s1__texto">
+            <h1 class="s1__titulo">
+              A <span class="c-bordo">Mentoria Abdômen Lucrativo</span> é uma aceleradora que transforma
+              a reabilitação abdominal na linha de <span class="c-bordo">lucro mais previsível</span> da sua
+              clínica e coloca <span class="c-bordo">R$10.000</span> no seu caixa nos
+              <span class="c-bordo">primeiros 30 dias.</span>
+            </h1>
+            <p class="s1__sub">
+              Para <strong>fisioterapeutas que já sabem tratar, mas ainda cobram barato, dependem de indicação,</strong>
+              vivem no limite do cansaço e já tentaram resolver isso com mais um curso, sem sucesso.
+            </p>
+          </div>
+
+          <a class="btn" href="#cta-final">
+            <span>Quero entender como funciona</span>
+            <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 2 — ESSA MENTORIA É PRA VOCÊ QUE...
+       ================================================================== -->
+    <section class="s2">
+      <!-- título, setas e carrossel dividem o mesmo flex-column: no mobile
+         as setas mudam de ordem (vão pra baixo do carrossel) -->
+      <div class="container s2__topo">
+        <h2 class="s2__titulo" data-anim>Essa mentoria é <span class="hl">pra você que...</span></h2>
+
+        <div class="s2__nav">
+          <button class="s2__arrow" type="button" data-carousel-prev aria-label="Card anterior">
+            <img src="Assets/icons/arrow-square-left.svg" alt="" aria-hidden="true" loading="lazy">
+          </button>
+          <button class="s2__arrow" type="button" data-carousel-next aria-label="Próximo card">
+            <img src="Assets/icons/arrow-square-right.svg" alt="" aria-hidden="true" loading="lazy">
+          </button>
+        </div>
+
+        <div class="carousel" data-carousel>
+          <div class="carousel__track" data-carousel-track data-anim-grupo>
+
+            <article class="card-p">
+              <img class="card-p__img" src="Assets/images/card-01.webp" alt="" aria-hidden="true" loading="lazy">
+              <p class="card-p__txt"><strong>Trabalha o dia inteiro,</strong> atende bem, entrega resultado pras suas
+                pacientes, e mesmo assim sente que o esforço não bate com o que entra no fim do mês.</p>
+            </article>
+
+            <article class="card-p">
+              <img class="card-p__img" src="Assets/images/card-02.webp" alt="" aria-hidden="true" loading="lazy">
+              <p class="card-p__txt"><strong>Já fez diversos cursos</strong>, acumulou diploma, especialização,
+                certificado, e o patamar financeiro continua o mesmo de antes.</p>
+            </article>
+
+            <article class="card-p">
+              <img class="card-p__img" src="Assets/images/card-03.webp" alt="" aria-hidden="true" loading="lazy">
+              <p class="card-p__txt"><strong>Tem horários ociosos na agenda</strong>, mas não sabe como
+                transformá-los em serviços mais rentáveis e valorizados.</p>
+            </article>
+
+            <article class="card-p">
+              <img class="card-p__img" src="Assets/images/card-04.webp" alt="" aria-hidden="true" loading="lazy">
+              <p class="card-p__txt"><strong>Está cansada de cobrar</strong> barato com medo de não entregar
+                valor suficiente pelo preço que cobra.</p>
+            </article>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <a class="btn s2__btn" href="#cta-final">
+          <span>SIM, QUERO FAZER PARTE DA MENTORIA!</span>
+          <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
+        </a>
+      </div>
+
+      <div class="divisor divisor--escuro"></div>
+
+      <div class="container">
+        <div class="s2__problema">
+          <div class="s2__bloco-t">
+            <h2 class="s2__h2" data-anim><span class="c-cinza600">O problema real</span> <span class="c-branco">(não o que você acha que é)</span></h2>
+            <p class="s2__lead">Toda vez que o dinheiro aperta, a resposta automática é:</p>
+          </div>
+
+          <ul class="chips">
+            <li class="chip"><img src="Assets/icons/icone-menos.svg" alt="" aria-hidden="true" loading="lazy"><span>mais um curso</span></li>
+            <li class="chip"><img src="Assets/icons/icone-menos.svg" alt="" aria-hidden="true" loading="lazy"><span>Mais uma certificação</span></li>
+            <li class="chip"><img src="Assets/icons/icone-menos.svg" alt="" aria-hidden="true" loading="lazy"><span>Mais uma pós</span></li>
+          </ul>
+
+          <p class="s2__paragrafo">
+            <span class="c-branco">Mais um final de semana estudando, na esperança de que, quando você "souber o suficiente",</span>
+            <span class="c-cinza600">o faturamento finalmente vai deslanchar. Só que o tempo passa. Você acumula diploma. E a conta no fim do mês continua igual.</span>
+          </p>
+        </div>
+
+        <div class="s2__virada">
+          <h3 class="s2__h3" data-anim>O que trava seu faturamento NUNCA FOI o que você ainda não sabe.</h3>
+          <div class="s2__destaque" data-anim>
+            <p>É não ter um modelo pra transformar o que você já sabe em faturamento. Nenhum curso técnico
+              resolve isso, porque curso técnico ensina a tratar melhor, não a vender melhor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 3 — A VIRADA
+       ================================================================== -->
+    <section class="s3">
+      <div class="container">
+        <div class="s3__grid">
+
+          <div class="s3__col-esq">
+            <!-- "fade" = só opacidade: este elemento já usa transform pra
+               se centralizar, e animar o eixo Y quebraria esse alinhamento -->
+          <img class="s3__escudo" data-anim="fade" src="Assets/images/escudo.webp" alt="Selo Bruna Blauth" loading="lazy">
+            <div class="s3__titulo-bloco">
+              <h2 class="s3__titulo" data-anim>A virada: o que muda o jogo</h2>
+              <span class="pill pill--bordo">Na mentoria, a lógica se inverte.</span>
+            </div>
+          </div>
+
+          <div class="s3__card" data-anim>
+            <h3 class="s3__card-titulo">Em vez de mais conteúdo técnico, você recebe o que realmente faltava:</h3>
+            <p class="s3__card-txt-g">Como transformar seu atendimento num serviço premium, como precificar sem medo,
+              como captar paciente sem depender de aparecer toda hora nas redes, e um jeito de vender que não parece "vender".</p>
+            <p class="s3__card-txt-p">Não é sobre acumular mais uma habilidade. É sobre transformar a habilidade
+              que você já tem em uma linha de faturamento previsível.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 4 — OS 4 PILARES
+       ================================================================== -->
+    <section class="s4">
+
+      <!-- faixas decorativas — sempre atrás do conteúdo desta section -->
+      <div class="faixas faixas--topo" aria-hidden="true">
+        <div class="faixa faixa--preta faixa--topo-preta">
+          <div class="faixa__inner"></div>
+        </div>
+        <div class="faixa faixa--bordo faixa--topo-bordo">
+          <div class="faixa__inner"></div>
+        </div>
+      </div>
+      <div class="faixas faixas--base" aria-hidden="true">
+        <div class="faixa faixa--bordo faixa--base-bordo">
+          <div class="faixa__inner"></div>
+        </div>
+        <div class="faixa faixa--preta faixa--base-preta">
+          <div class="faixa__inner"></div>
+        </div>
+      </div>
+
+      <div class="container container--largo s4__conteudo">
+        <h2 class="s4__titulo" data-anim>Os 4 pilares da mentoria</h2>
+
+        <div class="pilares" data-anim-grupo>
+          <article class="pilar">
+            <img class="pilar__icon" src="Assets/icons/icon-tec.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="pilar__titulo">Técnica lucrativa</h3>
+            <div class="pilar__txt">
+              <p>Você aprende a aplicar a reabilitação abdominal de forma estratégica, com foco em casos reais e serviços que o mercado paga de verdade.</p>
+              <p class="c-preto">O que muda: a técnica deixa de ser só conhecimento e passa a ser produto, algo que sustenta preço maior porque entrega valor percebido, não só resultado clínico.</p>
+            </div>
+          </article>
+
+          <article class="pilar">
+            <img class="pilar__icon" src="Assets/icons/icon-product.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="pilar__titulo">Produto e posicionamento</h3>
+            <div class="pilar__txt">
+              <p>Você monta protocolos, serviços e preços claros, criando uma diferenciação real, não genérica, no mercado.</p>
+              <p class="c-preto">O que muda: a paciente entende o valor antes mesmo de perguntar o preço, e passa a respeitar sua autoridade em vez de comparar você com quem cobra mais barato.</p>
+            </div>
+          </article>
+
+          <article class="pilar">
+            <img class="pilar__icon" src="Assets/icons/icon-market.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="pilar__titulo">Marketing e vendas éticas</h3>
+            <div class="pilar__txt">
+              <p>Scripts, narrativa e captação sem exposição forçada e sem promessa vazia.</p>
+              <p class="c-preto">O que muda: você vende com segurança, sem precisar virar "influencer" nem depender só de indicação para encher a agenda.</p>
+            </div>
+          </article>
+
+          <article class="pilar">
+            <img class="pilar__icon" src="Assets/icons/icon-gestao.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="pilar__titulo">Gestão e escalada</h3>
+            <div class="pilar__txt">
+              <p>Organização de agenda, rotinas e decisões estratégicas para crescer sem sobrecarga.</p>
+              <p class="c-preto">O que muda: menos caos no dia a dia, mais controle sobre pra onde o negócio está indo, e uma visão clara de como crescer sem trabalhar mais horas.</p>
+            </div>
+          </article>
+        </div>
+
+        <a class="btn s4__btn" href="#cta-final">
+          <span>quero participar da mentoria!</span>
+          <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
+        </a>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 5 — O QUE VOCÊ LEVA NA PRÁTICA
+       ================================================================== -->
+    <section class="s5">
+      <img class="s5__deco s5__deco--1" src="Assets/logo/b-blauth-02.svg" alt="" aria-hidden="true" loading="lazy">
+      <img class="s5__deco s5__deco--2" src="Assets/logo/b-blauth-01.svg" alt="" aria-hidden="true" loading="lazy">
+
+      <div class="container s5__conteudo">
+
+        <header class="s5__header">
+          <div class="s5__header-topo">
+            <h2 class="s5__titulo" data-anim>O que você leva na prática</h2>
+            <span class="pill pill--preto">Isso não é curso gravado!</span>
+          </div>
+          <p class="s5__lead">É processo guiado, com acompanhamento e correção de rota direto na sua realidade clínica.</p>
+        </header>
+
+        <div class="entregas" data-anim-grupo>
+
+          <article class="entrega">
+            <div class="entrega__media">
+              <img src="Assets/images/pratica-encontros.webp" alt="Encontro semanal ao vivo da mentoria" loading="lazy">
+            </div>
+            <div class="entrega__body">
+              <h3 class="entrega__titulo">Encontros semanais ao vivo</h3>
+              <div class="entrega__txt">
+                <p>O coração da mentoria acontece aqui. <strong>Encontros semanais ao vivo com a Bruna e convidados</strong>, com aulas, orientações, exercícios, hot seats e aplicação prática na sua realidade.</p>
+                <p>Além disso, <strong>uma vez por mês, teremos um encontro dedicado ao estudo de casos clínicos e conteúdo técnico,</strong> para aprofundar a avaliação e a condução dos casos de Reabilitação Abdominal.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="entrega">
+            <div class="entrega__media">
+              <img src="Assets/images/pratica-escola.webp" alt="Bruna Blauth demonstrando anatomia abdominal" loading="lazy">
+            </div>
+            <div class="entrega__body">
+              <h3 class="entrega__titulo">Escola do Abdômen</h3>
+              <div class="entrega__txt">
+                <p>Tenha acesso ao conhecimento e às ferramentas necessárias para <strong>avaliar, decidir e conduzir cada caso de Reabilitação Abdominal com segurança,</strong> seguindo um caminho clínico estruturado — do primeiro atendimento à evolução da paciente.</p>
+                <p>E, para colocar esse conhecimento em prática, conte com uma <strong>videoteca completa de exercícios utilizados pela Bruna em seus protocolos,</strong> para consultar e aplicar na sua rotina clínica.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="entrega entrega--invertida">
+            <div class="entrega__body">
+              <h3 class="entrega__titulo">Bruna IA + Bruna Copy</h3>
+              <div class="entrega__txt">
+                <p><strong>Bruna IA,</strong> agente de inteligência artificial especializado em Reabilitação Abdominal, criado para auxiliar você na gestão e nas demandas do dia a dia.</p>
+                <p>E a <strong>Bruna Copy</strong>, uma agente treinada pela Bruna para ajudar na criação de conteúdos e comunicação do seu negócio.</p>
+              </div>
+            </div>
+            <div class="entrega__media">
+              <img src="Assets/images/pratica-ia.webp" alt="Inteligência artificial aplicada à rotina clínica" loading="lazy">
+            </div>
+          </article>
+
+          <article class="entrega entrega--invertida">
+            <div class="entrega__body">
+              <h3 class="entrega__titulo">Scripts, checklists, planilhas e dossiês</h3>
+              <div class="entrega__txt">
+                <p><strong>Materiais práticos para facilitar sua rotina</strong> e ajudar você a mapear seu negócio, organizar seus processos e desenvolver sua própria metodologia de atuação.</p>
+              </div>
+            </div>
+            <div class="entrega__media">
+              <img src="Assets/images/pratica-scripts.webp" alt="Materiais e planilhas de apoio da mentoria" loading="lazy">
+            </div>
+          </article>
+
+        </div>
+
+        <div class="s5__bonus-header">
+          <img class="s5__bonus-icon" src="Assets/icons/icon-presente.svg" alt="" aria-hidden="true" loading="lazy">
+          <h2 class="s5__titulo" data-anim>Aproveite os bônus especiais ao entrar na mentoria</h2>
+        </div>
+
+        <div class="bonus" data-anim-grupo>
+          <article class="bonus__card">
+            <img class="bonus__icon" src="Assets/icons/icon-bonus05.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="bonus__titulo">Grupo exclusivo no WhatsApp:</h3>
+            <p class="bonus__txt"><strong>Suporte e direcionamento constante,</strong> pra você nunca ficar travada sozinha entre um encontro e outro.</p>
+          </article>
+
+          <article class="bonus__card">
+            <img class="bonus__icon" src="Assets/icons/icon-bonus04.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="bonus__titulo">Exercícios inteligentes no Pilates:</h3>
+            <p class="bonus__txt"><strong>Integração prática</strong> com atendimentos que você já faz hoje.</p>
+          </article>
+
+          <article class="bonus__card">
+            <img class="bonus__icon" src="Assets/icons/icon-bonus03.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="bonus__titulo">Videoteca de Exercícios no Pilates:</h3>
+            <p class="bonus__txt"><strong>Uma biblioteca de exercícios para você consultar quando precisar</strong> e integrar, de forma prática, aos atendimentos que você já realiza hoje.</p>
+          </article>
+
+          <article class="bonus__card">
+            <img class="bonus__icon" src="Assets/icons/icon-bonus02.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="bonus__titulo">Aula bônus — Flame | Estratégias que Giram Caixa:</h3>
+            <p class="bonus__txt"><strong>Estratégias práticas para transformar seu conhecimento</strong> e seus atendimentos em mais oportunidades de faturamento.</p>
+          </article>
+
+          <article class="bonus__card">
+            <img class="bonus__icon" src="Assets/icons/icon-bonus01.svg" alt="" aria-hidden="true" loading="lazy">
+            <h3 class="bonus__titulo">Aula bônus — Manual da Persuasão:</h3>
+            <p class="bonus__txt">Técnicas para se <strong>comunicar melhor, conduzir conversas e apresentar seu trabalho</strong> de forma mais persuasiva, sem precisar forçar uma venda.</p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 6 — DEPOIMENTOS
+       ================================================================== -->
+    <section class="s6">
+      <img class="s6__onda" src="Assets/icons/wave-top.svg" alt="" aria-hidden="true" loading="lazy">
+
+      <div class="container">
+        <h2 class="s6__titulo" data-anim>Depoimento e resultados das minhas mentoradas</h2>
+      </div>
+
+      <div class="depoimentos" data-drag>
+        <div class="depoimentos__track" data-drag-track>
+          <img class="dep dep--a" src="Assets/images/depoimento-01.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--b" src="Assets/images/depoimento-02.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--c" src="Assets/images/depoimento-03.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--d" src="Assets/images/depoimento-04.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--e" src="Assets/images/depoimento-05.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--f" src="Assets/images/depoimento-06.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--g" src="Assets/images/depoimento-07.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--h" src="Assets/images/depoimento-08.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--i" src="Assets/images/depoimento-09.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+          <img class="dep dep--j" src="Assets/images/depoimento-10.webp" alt="Depoimento de mentorada" draggable="false" loading="lazy">
+        </div>
+      </div>
+
+      <div class="dots" data-drag-dots aria-hidden="true">
+        <span class="dot is-ativo"></span><span class="dot"></span><span class="dot"></span>
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+
+      <div class="container">
+        <a class="btn s6__btn" href="#cta-final">
+          <span>Quero entender como funciona</span>
+          <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
+        </a>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 7 — CONHEÇA SUA MENTORA + FAQ
+       ================================================================== -->
+    <section class="s7">
+      <div class="s7__topo">
+        <img class="s7__wordmark" src="Assets/logo/bruna-blauth-wordmark.svg" alt="Bruna Blauth" loading="lazy">
+
+        <div class="container">
+          <div class="mentora" data-anim>
+            <div class="mentora__foto">
+              <img src="Assets/images/who-blauth.webp" alt="Bruna Blauth" loading="lazy">
+            </div>
+            <div class="mentora__info">
+              <div class="mentora__head">
+                <span class="pill pill--preto pill--sm">Conheça sua mentora!</span>
+                <h2 class="mentora__nome">Bruna Blauth</h2>
+              </div>
+              <div class="mentora__txt">
+                <p>Fisioterapeuta especializada em reabilitação abdominal e mentora de fisioterapeutas e profissionais
+                  do movimento. Mais de 20 anos de experiência em clínica, estúdio e educação profissional, com
+                  50 mil atendimentos realizados, sendo 20 mil só em reabilitação abdominal.</p>
+                <p>Sua abordagem une ciência, prática clínica e visão estratégica de negócio. Já ajudou mais de
+                  200 alunas a saírem do atendimento exaustivo e construírem serviços mais valorizados,
+                  rentáveis e sustentáveis.</p>
+              </div>
+              <img class="mentora__logo" src="Assets/logo/logo-bruna-blauth.svg" alt="Bruna Blauth" loading="lazy">
+            </div>
+          </div>
+
+          <span class="s7__selo" aria-hidden="true">
+            <img src="Assets/logo/selo-flame.svg" alt="" loading="lazy">
+          </span>
+        </div>
+      </div>
+
+      <div class="divisor divisor--claro"></div>
+
+      <div class="container">
+        <h2 class="s7__faq-titulo" data-anim><span class="c-bordo">Perguntas</span> antes de decidir</h2>
+
+        <div class="faq">
+
+          <div class="faq__item is-aberto">
+            <button class="faq__pergunta" type="button" aria-expanded="true">
+              <span>"Já fiz curso antes e não consegui aplicar. Por que essa seria diferente?"</span>
+              <span class="faq__icon">
+                <img class="faq__icon-fechado" src="Assets/icons/arrow-square-down.svg" alt="" aria-hidden="true" loading="lazy">
+                <img class="faq__icon-aberto" src="Assets/icons/arrow-square-up.svg" alt="" aria-hidden="true" loading="lazy">
+              </span>
+            </button>
+            <div class="faq__resposta">
+              <p>Porque essa mentoria não é sobre mais conteúdo técnico. É sobre implementação guiada, com correção
+                de rota semanal. Você não fica sozinha tentando aplicar o que aprendeu.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__pergunta" type="button" aria-expanded="false">
+              <span>"Não sei se vou conseguir cobrar mais."</span>
+              <span class="faq__icon">
+                <img class="faq__icon-fechado" src="Assets/icons/arrow-square-down.svg" alt="" aria-hidden="true" loading="lazy">
+                <img class="faq__icon-aberto" src="Assets/icons/arrow-square-up.svg" alt="" aria-hidden="true" loading="lazy">
+              </span>
+            </button>
+            <div class="faq__resposta">
+              <p>A maior parte das alunas chega com essa mesma insegurança. O pilar de posicionamento existe
+                exatamente pra isso: construir a justificativa de valor antes de você precisar defender o preço
+                numa conversa.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__pergunta" type="button" aria-expanded="false">
+              <span>"Minha rotina já é cheia. Não sei se dou conta de acompanhar."</span>
+              <span class="faq__icon">
+                <img class="faq__icon-fechado" src="Assets/icons/arrow-square-down.svg" alt="" aria-hidden="true" loading="lazy">
+                <img class="faq__icon-aberto" src="Assets/icons/arrow-square-up.svg" alt="" aria-hidden="true" loading="lazy">
+              </span>
+            </button>
+            <div class="faq__resposta">
+              <p>Os encontros são semanais, não diários, e o conteúdo fica gravado pra quem não conseguir participar
+                ao vivo. O processo é desenhado pra caber numa agenda que já está cheia, não pra competir com ela.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       SECTION 8 — CTA FINAL
+       ================================================================== -->
+    <section class="s8" id="cta-final">
+      <div class="container">
+        <div class="cta-final" data-anim>
+          <picture>
+            <source media="(max-width: 768px)" srcset="Assets/images/last-cta-mobile.webp">
+            <img class="cta-final__bg" src="Assets/images/last-cta.webp" alt="" aria-hidden="true" loading="lazy">
+          </picture>
+          <div class="cta-final__conteudo">
+            <div class="cta-final__texto">
+              <p class="cta-final__linha">Você pode continuar tentando resolver isso com mais um curso técnico.</p>
+              <p class="cta-final__destaque">Ou pode finalmente aprender a transformar o que você já sabe em um
+                negócio que sustenta a vida que você quer ter.</p>
+            </div>
+            <a class="btn" href="#hero">
+              <span>Quero fazer parte da mentoria</span>
+              <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+       FOOTER
+       ================================================================== -->
+    <footer class="rodape">
+      <p>Bruna Blauth | Todos os direitos reservados. <br>CNPJ - 42.360.847/0001-27</p>
+    </footer>
+
+  </div>
+
+  <!-- ====================================================================
+       LIGHTBOX — abre o depoimento clicado em tela cheia
+       ==================================================================== -->
+  <dialog class="lightbox" id="lightbox" aria-label="Depoimento ampliado">
+    <button class="lightbox__fechar" type="button" aria-label="Fechar depoimento">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+    <img class="lightbox__img" alt="">
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

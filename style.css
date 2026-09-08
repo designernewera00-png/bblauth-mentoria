@@ -1,0 +1,2127 @@
+/* =================================================================
+   1. VARIÁVEIS
+   ================================================================= */
+:root {
+  /* Cores — extraídas das variáveis do Figma */
+  --preto: #000000;
+  --branco: #ffffff;
+  --off-white: #f0f0f0;
+  --bordo: #a41034;
+  --bordo-claro: #f23e69;
+  --bordo-escuro: #3e0614;
+  --grey-200: #333333;
+  --grey-400: #666666;
+  --grey-600: #999999;
+  --grey-800: #cccccc;
+  --card-escuro: #262626;
+
+  /* Tipografia
+     Títulos: Cambria Regular (local) — Gelasio é metricamente compatível
+     Corpo:   Inter Medium */
+  --fonte-titulo: "Cambria", "Gelasio", Georgia, "Times New Roman", serif;
+  --fonte-corpo: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Layout */
+  --site-max: 1920px;
+  --grid-max: 1280px;
+  --gutter: 40px;
+
+  /* Gradiente padrão dos botões */
+  --grad-botao: linear-gradient(
+    90deg,
+    var(--bordo) 45.63%,
+    var(--bordo-claro) 116.96%
+  );
+}
+
+/* =================================================================
+   2. RESET
+   ================================================================= */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Sem Lenis (JS bloqueado) o navegador ainda faz o scroll suave nativo */
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+
+/* Classes exigidas pelo Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--fonte-corpo);
+  font-weight: 500;
+  color: var(--preto);
+  background-color: var(--off-white);
+  line-height: 1.3;
+  letter-spacing: -0.04em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  line-height: 1;
+}
+
+strong,
+b {
+  font-weight: 500;
+}
+
+/* =================================================================
+   3. UTILITÁRIOS
+   ================================================================= */
+.site {
+  max-width: var(--site-max);
+  margin-inline: auto;
+  overflow-x: clip;
+}
+
+.container {
+  width: min(var(--grid-max), 100% - (var(--gutter) * 2));
+  margin-inline: auto;
+}
+
+/* usado na section 4, onde a grade de pilares tem 1400px no Figma */
+.container--largo {
+  width: min(1400px, 100% - (var(--gutter) * 2));
+}
+
+.c-bordo {
+  color: var(--bordo);
+}
+.c-branco {
+  color: var(--branco);
+}
+.c-preto {
+  color: var(--preto);
+}
+.c-cinza600 {
+  color: var(--grey-600);
+}
+
+/* ---------- Botão padrão ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 4px;
+  background: var(--grad-botao);
+  color: var(--branco);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-transform: uppercase;
+  text-align: center;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 28px rgba(164, 16, 52, 0.32);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn__icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+/* ---------- Pílulas ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--branco);
+}
+
+.pill--bordo {
+  background: var(--bordo);
+  padding: 10px 20px;
+}
+
+.pill--preto {
+  background: var(--preto);
+  padding: 10px 30px;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.pill--sm {
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* ---------- Divisor ---------- */
+.divisor {
+  width: min(1400px, 100% - (var(--gutter) * 2));
+  height: 1px;
+  margin-inline: auto;
+  border: 0;
+}
+
+.divisor--escuro {
+  background: linear-gradient(
+    90deg,
+    rgba(164, 16, 52, 0) 0%,
+    var(--bordo) 50%,
+    rgba(164, 16, 52, 0) 100%
+  );
+}
+
+.divisor--claro {
+  background: linear-gradient(
+    90deg,
+    rgba(164, 16, 52, 0) 0%,
+    var(--bordo) 50%,
+    rgba(164, 16, 52, 0) 100%
+  );
+  opacity: 0.55;
+}
+
+/* =================================================================
+   4. SECTION 1 — HERO
+   ================================================================= */
+.s1 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 800px;
+  background: var(--off-white);
+  border-bottom: 1px solid var(--bordo);
+  overflow: hidden;
+}
+
+/* o <picture> troca a arte do hero no mobile; não deve gerar caixa própria */
+.s1 picture {
+  display: contents;
+}
+
+.s1__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.s1 .container {
+  position: relative;
+  z-index: 1;
+}
+
+.s1__box {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 594px;
+  max-width: 100%;
+}
+
+.s1__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.s1__titulo {
+  font-size: 42px;
+  line-height: 1;
+  color: var(--preto);
+}
+
+.s1__sub {
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--grey-400);
+}
+
+.s1__sub strong {
+  color: var(--preto);
+}
+
+.s1__box .btn {
+  align-self: flex-start;
+}
+
+/* =================================================================
+   5. SECTION 2 — ESSA MENTORIA É PRA VOCÊ QUE...
+   ================================================================= */
+.s2 {
+  background: var(--preto);
+  color: var(--off-white);
+  padding-top: 149px;
+  padding-bottom: 143px;
+}
+
+.s2__titulo {
+  font-size: 42px;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--off-white);
+}
+
+.s2__titulo .hl {
+  background: var(--bordo);
+}
+
+/* título + setas + carrossel na mesma coluna (permite reordenar no mobile) */
+.s2__topo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* setas do carrossel */
+.s2__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 59px;
+}
+
+.s2__arrow {
+  width: 33px;
+  height: 33px;
+  flex-shrink: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.s2__arrow img {
+  width: 100%;
+  height: 100%;
+}
+
+/* o SVG exportado do Figma aponta pra esquerda; a seta "próximo" gira 180° */
+.s2__arrow[data-carousel-next] img {
+  transform: rotate(180deg);
+}
+
+.s2__arrow:hover {
+  transform: scale(1.08);
+}
+
+.s2__arrow[disabled] {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+}
+
+/* carrossel */
+.carousel {
+  margin-top: 36.56px;
+  overflow: hidden;
+}
+
+.carousel__track {
+  display: flex;
+  gap: 10px;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.card-p {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  width: 400px;
+  height: 500px;
+  padding: 30px;
+  border-radius: 6px;
+  border-bottom: 2px solid var(--bordo);
+  background: var(--card-escuro);
+  overflow: hidden;
+}
+
+.card-p__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.card-p::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    184.59deg,
+    rgba(10, 10, 10, 0) 22.92%,
+    rgb(10, 10, 10) 94.07%
+  );
+  pointer-events: none;
+}
+
+.card-p__txt {
+  position: relative;
+  z-index: 1;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--grey-400);
+}
+
+.card-p__txt strong {
+  color: var(--grey-800);
+}
+
+.s2__btn {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin: 80.38px auto 0;
+}
+
+.s2 .divisor {
+  margin-top: 107.51px;
+}
+
+/* bloco "o problema real" */
+.s2__problema {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 1064px;
+  max-width: 100%;
+  margin: 122.55px auto 0;
+}
+
+.s2__bloco-t {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.s2__h2 {
+  font-size: 42px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.s2__lead {
+  font-size: 24px;
+  line-height: 1.2;
+  color: var(--grey-600);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border-bottom: 2px solid var(--bordo);
+  background: var(--grey-200);
+  color: var(--branco);
+  font-size: 18px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.chip img {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.s2__paragrafo {
+  font-size: 24px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.s2__virada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+  width: 630px;
+  max-width: 100%;
+  margin: 67px auto 0;
+}
+
+.s2__h3 {
+  font-size: 42px;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--off-white);
+}
+
+.s2__destaque {
+  width: 100%;
+  padding: 40px 20px;
+  border-radius: 6px;
+  background: var(--bordo);
+}
+
+.s2__destaque p {
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--branco);
+}
+
+/* =================================================================
+   6. SECTION 3 — A VIRADA
+   ================================================================= */
+.s3 {
+  background: var(--branco);
+  padding-block: 160px;
+}
+
+.s3__grid {
+  display: grid;
+  grid-template-columns: 434px 522px;
+  justify-content: space-between;
+  padding-inline: 88px;
+}
+
+.s3__col-esq {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 538px;
+  margin-top: 21px;
+}
+
+.s3__escudo {
+  position: absolute;
+  top: -50.51px;
+  left: 35%;
+  transform: translateX(-50%);
+  width: 450px;
+  height: 550px;
+  object-fit: contain;
+  filter: drop-shadow(-5px 7px 20px rgba(0, 0, 0, 0.25))
+    drop-shadow(-21px 30px 37px rgba(0, 0, 0, 0.16));
+}
+
+.s3__titulo-bloco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 19px;
+}
+
+.s3__titulo {
+  font-size: 52px;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--bordo);
+}
+
+.s3__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  height: 580px;
+  padding: 40px;
+  border-radius: 6px;
+  background: var(--bordo);
+  color: var(--branco);
+}
+
+.s3__card-titulo {
+  font-size: 32px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.s3__card-txt-g {
+  font-size: 26px;
+  line-height: 1.3;
+}
+
+.s3__card-txt-p {
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+/* =================================================================
+   7. SECTION 4 — OS 4 PILARES
+   ================================================================= */
+.s4 {
+  position: relative;
+  padding-top: 203.57px;
+  padding-bottom: 174px;
+  background: var(--off-white);
+  overflow: hidden;
+}
+
+/* --- faixas decorativas (sempre atrás do conteúdo desta section) --- */
+.faixas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.faixas--topo {
+  top: 0;
+}
+.faixas--base {
+  bottom: 0;
+}
+
+.faixa {
+  position: absolute;
+  left: 50%;
+  width: 140%;
+  padding-block: 10px;
+  transform-origin: center;
+}
+
+.faixa--bordo {
+  background: var(--bordo);
+}
+.faixa--preta {
+  background: var(--preto);
+}
+
+/* Marquee: o inner tem duas cópias idênticas do grupo lado a lado e desliza
+   50% da própria largura — ao terminar, a segunda cópia está exatamente onde
+   a primeira começou, então a emenda nunca aparece. Anima só transform, que
+   a GPU resolve sem recalcular layout. A duração é definida no script.js em
+   função da largura, pra a velocidade ficar igual em qualquer tela. */
+.faixa__inner {
+  display: flex;
+  width: max-content;
+  font-family: var(--fonte-titulo);
+  font-size: 22px;
+  line-height: 1;
+  white-space: nowrap;
+  animation: faixa-desliza 45s linear infinite;
+}
+
+.faixa__grupo {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding-right: 30px;
+}
+
+/* sentidos opostos: a faixa bordô vai pra um lado, a preta pro outro */
+.faixa--preta .faixa__inner {
+  line-height: 1.5;
+  animation-direction: reverse;
+}
+
+/* fora da tela a animação para — nada roda à toa no resto da página */
+.s4:not(.s4--visivel) .faixa__inner {
+  animation-play-state: paused;
+}
+
+@keyframes faixa-desliza {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.faixa__item {
+  color: var(--branco);
+}
+.faixa--bordo .faixa__item--alt {
+  color: var(--grey-800);
+}
+.faixa--preta .faixa__item--alt {
+  color: var(--grey-400);
+}
+
+.faixa--topo-preta {
+  top: 60.69px;
+  transform: translate(-50%, -50%) rotate(-2.59deg);
+  z-index: 2;
+}
+.faixa--topo-bordo {
+  top: 56.1px;
+  transform: translate(-50%, -50%) rotate(0.97deg);
+  z-index: 1;
+}
+.faixa--base-bordo {
+  bottom: 52.9px;
+  transform: translate(-50%, 50%) rotate(0.97deg);
+  z-index: 1;
+}
+.faixa--base-preta {
+  bottom: 48.3px;
+  transform: translate(-50%, 50%) rotate(-2.59deg);
+  z-index: 2;
+}
+
+.s4__conteudo {
+  position: relative;
+  z-index: 3;
+}
+
+.s4__titulo {
+  font-size: 52px;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--bordo);
+}
+
+.pilares {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 21px;
+  margin-top: 63.43px;
+}
+
+.pilar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+  min-height: 464px;
+  padding: 30px;
+  border-radius: 6px;
+  border-top: 3px solid var(--bordo);
+  background: var(--branco);
+}
+
+.pilar__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.pilar__titulo {
+  font-size: 32px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--preto);
+}
+
+.pilar__txt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3em;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--grey-400);
+}
+
+.s4__btn {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin: 103.07px auto 0;
+}
+
+/* =================================================================
+   8. SECTION 5 — O QUE VOCÊ LEVA NA PRÁTICA
+   ================================================================= */
+.s5 {
+  position: relative;
+  background: var(--bordo);
+  color: var(--branco);
+  padding-top: 150px;
+  padding-bottom: 186px;
+  overflow: hidden;
+}
+
+.s5__deco {
+  position: absolute;
+  width: 38.92%;
+  height: auto;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.s5__deco--1 {
+  top: 109.44px;
+  left: 12.22%;
+}
+.s5__deco--2 {
+  bottom: 109.72px;
+  left: 50%;
+}
+
+.s5__conteudo {
+  position: relative;
+  z-index: 1;
+}
+
+.s5__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 630px;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.s5__header-topo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.s5__titulo {
+  font-size: 52px;
+  line-height: 1;
+  text-align: center;
+  color: var(--branco);
+}
+
+.s5__lead {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+/* --- grade de entregas --- */
+.entregas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 709px 631px;
+  gap: 10px;
+  margin-top: 60px;
+}
+
+.entrega {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.entrega__media {
+  height: 333px;
+  flex-shrink: 0;
+  background: var(--branco);
+}
+
+.entrega__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.entrega__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  gap: 30px;
+  padding: 40px;
+  background: var(--preto);
+}
+
+.entrega__titulo {
+  font-size: 32px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--branco);
+}
+
+.entrega__txt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3em;
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--grey-600);
+}
+
+.entrega__txt strong {
+  color: var(--branco);
+}
+
+/* --- bônus --- */
+.s5__bonus-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 166px;
+}
+
+.s5__bonus-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.bonus {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 60px;
+}
+
+.bonus__card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+  min-height: 291px;
+  padding: 30px;
+  border-radius: 6px;
+  border-top: 3px solid var(--branco);
+  background: var(--preto);
+}
+
+.bonus__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.bonus__titulo {
+  font-size: 24px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--branco);
+}
+
+.bonus__txt {
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--grey-400);
+}
+
+.bonus__txt strong {
+  color: var(--branco);
+}
+
+/* =================================================================
+   9. SECTION 6 — DEPOIMENTOS
+   ================================================================= */
+.s6 {
+  position: relative;
+  background: var(--branco);
+  padding-top: 202px;
+  padding-bottom: 99.47px;
+}
+
+.s6__onda {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.s6__titulo {
+  position: relative;
+  z-index: 1;
+  width: 686px;
+  max-width: 100%;
+  margin-inline: auto;
+  font-size: 52px;
+  line-height: 1;
+  text-align: center;
+  color: var(--bordo);
+}
+
+.depoimentos {
+  margin-top: 32.58px;
+  padding-block: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  user-select: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.depoimentos::-webkit-scrollbar {
+  display: none;
+}
+
+.depoimentos.is-arrastando {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.depoimentos.is-arrastando img {
+  pointer-events: none;
+}
+
+.depoimentos__track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: max-content;
+  padding-inline: 20px;
+}
+
+.dep {
+  flex-shrink: 0;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* arrastar é o gesto principal da régua; o clique amplia */
+  cursor: grab;
+  border-radius: 4px;
+  transition: filter 0.25s ease;
+}
+
+.depoimentos.is-arrastando .dep {
+  cursor: grabbing;
+}
+
+.dep:hover {
+  filter: brightness(1.06);
+}
+
+.dep:focus-visible {
+  outline: 3px solid var(--bordo);
+  outline-offset: 3px;
+}
+
+.dep--a {
+  width: 289.62px;
+  height: 544.47px;
+}
+.dep--b {
+  width: 288.16px;
+  height: 544.47px;
+}
+.dep--c {
+  width: 360.55px;
+  height: 371.58px;
+}
+.dep--d {
+  width: 278.38px;
+  height: 604.96px;
+}
+.dep--e {
+  width: 274.04px;
+  height: 371.58px;
+}
+.dep--f {
+  width: 554.18px;
+  height: 371.58px;
+}
+.dep--g {
+  width: 266.61px;
+  height: 371.58px;
+}
+.dep--h {
+  width: 421.88px;
+  height: 371.58px;
+}
+.dep--i {
+  width: 334.02px;
+  height: 371.58px;
+}
+.dep--j {
+  width: 441.82px;
+  height: 371.58px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 4.16px;
+  margin-top: 32.58px;
+}
+
+.dot {
+  width: 6.93px;
+  height: 6.93px;
+  border-radius: 50%;
+  background: var(--grey-800);
+  transition: background 0.3s ease;
+}
+
+.dot.is-ativo {
+  background: var(--bordo);
+}
+
+.s6__btn {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin: 66.48px auto 0;
+}
+
+/* ---------- Lightbox dos depoimentos ----------
+   O estado aberto já é o estado visível: as animações abaixo só
+   decoram a entrada e a saída. Se elas não rodarem (movimento
+   reduzido, navegador antigo), o lightbox continua funcionando. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  /* folga no topo pra imagem nunca ficar embaixo do botão de fechar */
+  padding: 76px 24px 24px;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.lightbox[open] {
+  display: flex;
+  animation: lb-entrada 0.25s ease;
+}
+
+.lightbox[open]::backdrop {
+  background: rgba(0, 0, 0, 0.88);
+  animation: lb-entrada 0.25s ease;
+}
+
+.lightbox__img {
+  width: auto;
+  height: auto;
+  max-width: min(100%, 900px);
+  max-height: 100%;
+  border-radius: 6px;
+}
+
+.lightbox[open] .lightbox__img {
+  animation: lb-zoom 0.25s ease;
+}
+
+/* saída */
+.lightbox.is-saindo,
+.lightbox.is-saindo::backdrop {
+  animation: lb-saida 0.2s ease forwards;
+}
+
+@keyframes lb-entrada {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lb-saida {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes lb-zoom {
+  from {
+    transform: scale(0.96);
+  }
+}
+
+.lightbox__fechar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--branco);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.lightbox__fechar:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.06);
+}
+
+.lightbox__fechar:focus-visible {
+  outline: 2px solid var(--branco);
+  outline-offset: 2px;
+}
+
+/* =================================================================
+   10. SECTION 7 — CONHEÇA SUA MENTORA + FAQ
+   ================================================================= */
+.s7 {
+  background: var(--off-white);
+  padding-bottom: 50px;
+}
+
+.s7__topo {
+  position: relative;
+  padding-top: 226.69px;
+}
+
+.s7__wordmark {
+  position: absolute;
+  top: 99.31px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1189.81px;
+  max-width: calc(100% - (var(--gutter) * 2));
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.s7__topo .container {
+  position: relative;
+  z-index: 1;
+}
+
+.mentora {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 600px;
+  overflow: hidden;
+}
+
+.mentora__foto {
+  background: var(--branco);
+  overflow: hidden;
+}
+
+.mentora__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+.mentora__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px;
+  background: var(--bordo);
+  color: var(--branco);
+}
+
+.mentora__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.mentora__nome {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.mentora__txt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3em;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.mentora__logo {
+  width: 80px;
+  height: auto;
+}
+
+.s7__selo {
+  position: absolute;
+  top: -48.03px;
+  left: -51.04px;
+  display: grid;
+  place-items: center;
+  width: 112.08px;
+  height: 112.08px;
+  border-radius: 50%;
+  border: 1.22px solid var(--branco);
+  background: var(--bordo);
+  filter: drop-shadow(-1.22px 1.83px 2.13px rgba(0, 0, 0, 0.2))
+    drop-shadow(-9.73px 15.82px 5.48px rgba(0, 0, 0, 0.1));
+  z-index: 2;
+}
+
+.s7__selo img {
+  width: 49.5%;
+  height: auto;
+}
+
+.s7 .divisor {
+  margin-top: 171.24px;
+}
+
+.s7__faq-titulo {
+  margin-top: 113.07px;
+  font-size: 42px;
+  line-height: 1;
+  text-align: center;
+  color: var(--preto);
+}
+
+/* --- acordeão --- */
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 80%;
+  margin: 60.64px auto 0;
+}
+
+.faq__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.faq__pergunta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid var(--grey-800);
+  border-radius: 6px;
+  background: var(--branco);
+  color: var(--bordo);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.faq__pergunta:hover {
+  border-color: var(--bordo);
+}
+
+.faq__icon {
+  position: relative;
+  display: block;
+  width: 33px;
+  height: 33px;
+  flex-shrink: 0;
+}
+
+.faq__icon img {
+  position: absolute;
+  inset: 0;
+  width: 33px;
+  height: 33px;
+  transition: opacity 0.25s ease;
+}
+
+/* os SVGs do Figma apontam pra esquerda e são girados na composição */
+.faq__icon-fechado {
+  transform: rotate(-90deg);
+}
+.faq__icon-aberto {
+  transform: rotate(90deg);
+}
+
+.faq__icon-aberto {
+  opacity: 0;
+}
+.faq__item.is-aberto .faq__icon-fechado {
+  opacity: 0;
+}
+.faq__item.is-aberto .faq__icon-aberto {
+  opacity: 1;
+}
+
+.faq__resposta {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.faq__item.is-aberto .faq__resposta {
+  grid-template-rows: 1fr;
+}
+
+.faq__resposta > p {
+  min-height: 0;
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--grey-200);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.05s;
+}
+
+.faq__item.is-aberto .faq__resposta > p {
+  opacity: 1;
+}
+
+/* =================================================================
+   11. SECTION 8 — CTA FINAL
+   ================================================================= */
+.s8 {
+  background: var(--off-white);
+  padding-block: 92px;
+}
+
+.cta-final {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 358px;
+  padding: 40px;
+  border-radius: 50px;
+  background: linear-gradient(
+    270deg,
+    var(--bordo) 22.42%,
+    var(--bordo-escuro) 103.26%
+  );
+  overflow: hidden;
+}
+
+/* o <picture> troca a arte no mobile; não deve gerar caixa própria */
+.cta-final picture {
+  display: contents;
+}
+
+.cta-final__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* A arte last-cta.webp já vem com o escurecimento do Figma embutido.
+   Aqui só um véu leve pra garantir contraste do texto — repetir os 70%
+   do Figma escureceria a imagem duas vezes. */
+.cta-final::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.cta-final__conteudo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 798.11px;
+  max-width: 100%;
+}
+
+.cta-final__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+  color: var(--branco);
+}
+
+.cta-final__linha {
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.cta-final__destaque {
+  font-family: var(--fonte-titulo);
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* =================================================================
+   12. FOOTER
+   ================================================================= */
+.rodape {
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+  background: var(--off-white);
+  border-top: 1px solid var(--bordo);
+}
+
+.rodape p {
+  font-size: 16px;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--bordo);
+}
+
+/* =================================================================
+   13. ANIMAÇÕES DE SCROLL
+   Esconde os elementos animados ANTES do GSAP assumir, pra não haver
+   "pisca". A classe .anim é posta por um script no <head> e removida
+   assim que o GSAP toma conta — ou por segurança, se ele não carregar.
+   Marcação no HTML:
+     data-anim         -> entra sozinho (fade + subida)
+     data-anim="fade"  -> só opacidade (elementos que já usam transform)
+     data-anim-grupo   -> os filhos entram em cascata
+     data-anim-hero    -> entra no carregamento, não no scroll
+   ================================================================= */
+.anim [data-anim],
+.anim [data-anim-hero] > *,
+.anim [data-anim-grupo] > * {
+  opacity: 0;
+}
+
+/* =================================================================
+   13. RESPONSIVO
+   ================================================================= */
+
+/* ---------- ≤ 1360px: o grid de 1280 começa a encolher ---------- */
+@media (max-width: 1360px) {
+  .s3__grid {
+    padding-inline: 0;
+    grid-template-columns: minmax(0, 434px) minmax(0, 522px);
+    gap: 60px;
+  }
+}
+
+/* ---------- ≤ 1180px ---------- */
+@media (max-width: 1180px) {
+  .s3__grid {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 80px;
+  }
+
+  .s3__col-esq {
+    width: 434px;
+    max-width: 100%;
+  }
+
+  .s3__card {
+    width: 522px;
+    max-width: 100%;
+    height: auto;
+    min-height: 480px;
+  }
+
+  .entregas {
+    grid-template-rows: auto auto;
+  }
+
+  .entrega__body {
+    min-height: 300px;
+  }
+}
+
+/* ---------- ≤ 1024px ---------- */
+@media (max-width: 1024px) {
+  :root {
+    --gutter: 32px;
+  }
+
+  .s1 {
+    min-height: 700px;
+  }
+  .s1__titulo {
+    font-size: 36px;
+  }
+  .s1__sub {
+    font-size: 22px;
+  }
+
+  .s2 {
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+  .s2__titulo,
+  .s2__h2 {
+    font-size: 34px;
+  }
+  .s2__paragrafo {
+    font-size: 24px;
+  }
+
+  .s3 {
+    padding-block: 110px;
+  }
+  .s3__titulo {
+    font-size: 42px;
+  }
+  .s3__card-txt-g {
+    font-size: 22px;
+  }
+
+  .s4 {
+    padding-top: 160px;
+    padding-bottom: 150px;
+  }
+  .s4__titulo,
+  .s5__titulo,
+  .s6__titulo {
+    font-size: 42px;
+  }
+  .s4__btn {
+    margin-top: 70px;
+  }
+
+  .s5 {
+    padding-top: 110px;
+    padding-bottom: 140px;
+  }
+  .s5__bonus-header {
+    margin-top: 110px;
+  }
+
+  .entregas {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .entrega--invertida {
+    flex-direction: column-reverse;
+  }
+
+  .s6 {
+    padding-top: 150px;
+  }
+
+  .s7__topo {
+    padding-top: 180px;
+  }
+  .s7__wordmark {
+    top: 80px;
+  }
+
+  .mentora {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .mentora__foto {
+    height: 480px;
+  }
+
+  .s7 .divisor {
+    margin-top: 110px;
+  }
+  .s7__faq-titulo {
+    margin-top: 80px;
+    font-size: 34px;
+  }
+  .faq {
+    margin-top: 40px;
+  }
+  .faq__pergunta {
+    font-size: 19px;
+  }
+
+  .cta-final__destaque {
+    font-size: 28px;
+  }
+}
+
+/* =================================================================
+   ≤ 768px — MOBILE
+   Valores tirados do frame MOBILE do Figma (402px, grid de 362px
+   com 20px de gutter). Só muda estrutura e escala: os efeitos
+   (Lenis, carrossel, drag, acordeão) são os mesmos do desktop.
+   ================================================================= */
+@media (max-width: 768px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  /* ---------- botão (16px e padding 20px já vêm da regra base) ---------- */
+  .btn {
+    gap: 6px;
+  }
+
+  /* ---------- S1 — hero ---------- */
+  .s1 {
+    align-items: flex-end;
+    min-height: 877px;
+    padding-bottom: 56px;
+  }
+
+  .s1__bg {
+    object-position: top center;
+  }
+
+  .s1__box {
+    width: 100%;
+    text-align: center;
+  }
+
+  .s1__titulo {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  .s1__sub {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .s1__box .btn {
+    align-self: stretch;
+  }
+
+  /* ---------- S2 ---------- */
+  .s2 {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .s2__titulo {
+    font-size: 32px;
+  }
+
+  /* o destaque bordô ocupa a segunda linha inteira, como no Figma */
+  .s2__titulo .hl {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  /* no mobile as setas ficam abaixo do carrossel e centralizadas */
+  .carousel {
+    order: 2;
+    margin-top: 53px;
+  }
+  .s2__nav {
+    order: 3;
+    justify-content: center;
+    margin-top: 26.5px;
+  }
+
+  .card-p {
+    width: 331.6px;
+    height: 414.5px;
+    padding: 24.87px;
+    border-radius: 4.97px;
+    border-bottom-width: 1.66px;
+  }
+
+  .card-p__txt {
+    font-size: 18px;
+  }
+
+  .s2__btn {
+    margin-top: 77px;
+  }
+  .s2 .divisor {
+    margin-top: 79px;
+  }
+
+  .s2__problema {
+    margin-top: 49px;
+    gap: 32px;
+  }
+  .s2__h2 {
+    font-size: 32px;
+  }
+  .s2__lead {
+    font-size: 22px;
+  }
+  .s2__paragrafo {
+    font-size: 20px;
+  }
+
+  .chips {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .s2__virada {
+    margin-top: 90px;
+  }
+  .s2__h3 {
+    font-size: 32px;
+  }
+
+  /* ---------- S3 ---------- */
+  .s3 {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .s3__grid {
+    gap: 60.5px;
+  }
+
+  .s3__col-esq {
+    width: 100%;
+    height: 538px;
+    margin-top: 0;
+  }
+
+  .s3__escudo {
+    position: absolute;
+    top: -20.51px;
+    left: 35%;
+    transform: translateX(-50%);
+    width: 450px;
+    height: 550px;
+  }
+
+  .s3__titulo {
+    font-size: 42px;
+  }
+
+  .s3__card {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 40px 30px;
+    gap: 30px;
+  }
+
+  .s3__card-titulo {
+    font-size: 32px;
+  }
+  .s3__card-txt-g {
+    font-size: 24px;
+  }
+  .s3__card-txt-p {
+    font-size: 18px;
+  }
+
+  /* ---------- S4 ---------- */
+  .s4 {
+    padding-top: 114.99px;
+    padding-bottom: 158px;
+  }
+
+  /* faixas na escala do mobile (0.669 do desktop) */
+  .faixa {
+    padding-block: 6.69px;
+  }
+  .faixa__inner {
+    font-size: 14.72px;
+  }
+  .faixa__grupo {
+    gap: 20.07px;
+    padding-right: 20.07px;
+  }
+
+  .faixa--topo-bordo {
+    top: 18.16px;
+  }
+  .faixa--topo-preta {
+    top: 33.18px;
+  }
+  .faixa--base-bordo {
+    bottom: 54.86px;
+  }
+  .faixa--base-preta {
+    bottom: 32.27px;
+  }
+
+  .s4__titulo {
+    font-size: 42px;
+  }
+
+  .pilares {
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    margin-top: 70px;
+  }
+  .pilar {
+    /* 320px do Figma; o min() só age abaixo de 360px, onde não caberia */
+    width: min(320px, 100%);
+    min-height: 464px;
+  }
+
+  .s4__btn {
+    margin-top: 27px;
+  }
+
+  /* ---------- S5 ---------- */
+  .s5 {
+    padding-top: 68px;
+    padding-bottom: 120px;
+  }
+
+  .s5__deco {
+    width: 364.55px;
+    left: 18px;
+  }
+  .s5__deco--1 {
+    top: 36px;
+    transform: scaleX(-1);
+  }
+  .s5__deco--2 {
+    bottom: 1315px;
+    left: 18px;
+  }
+
+  .s5__titulo {
+    font-size: 32px;
+  }
+  .pill--preto {
+    font-size: 20px;
+  }
+  /* precisa vir depois de .pill--preto: a pílula da mentora usa as duas classes */
+  .pill--sm {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+  .s5__lead {
+    font-size: 20px;
+  }
+
+  .entregas {
+    margin-top: 33px;
+    gap: 10px;
+  }
+
+  .entrega__titulo {
+    font-size: 32px;
+  }
+  .entrega__txt {
+    font-size: 20px;
+  }
+
+  .s5__bonus-header {
+    margin-top: 120px;
+  }
+
+  .bonus {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 80px;
+  }
+  .bonus__card {
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* ---------- S6 ---------- */
+  .s6 {
+    padding-top: 120px;
+    padding-bottom: 97px;
+  }
+
+  .s6__onda {
+    left: 50%;
+    width: 956.65px;
+    transform: translateX(-50%);
+  }
+
+  .s6__titulo {
+    font-size: 42px;
+  }
+
+  /* no mobile a régua de depoimentos fica dentro do grid de 362px */
+  .depoimentos {
+    width: min(var(--grid-max), 100% - (var(--gutter) * 2));
+    margin-inline: auto;
+    margin-top: 30px;
+    border-radius: 6px;
+  }
+
+  .depoimentos__track {
+    padding-inline: 0;
+  }
+
+  .dots {
+    margin-top: 24px;
+  }
+  .s6__btn {
+    margin-top: 76px;
+  }
+
+  /* ---------- S7 ---------- */
+  .s7 {
+    padding-bottom: 20px;
+  }
+
+  .s7__topo {
+    padding-top: 112.89px;
+  }
+
+  .s7__wordmark {
+    top: 60px;
+    width: 447.65px;
+    max-width: none;
+  }
+
+  .mentora__foto {
+    height: 519px;
+  }
+  .mentora__nome {
+    font-size: 42px;
+  }
+  .mentora__txt {
+    font-size: 20px;
+  }
+
+  .s7__selo {
+    top: -52.89px;
+    left: 0;
+  }
+
+  .s7 .divisor {
+    margin-top: 120px;
+  }
+  .s7__faq-titulo {
+    margin-top: 67.61px;
+    font-size: 32px;
+  }
+
+  .faq {
+    max-width: 100%;
+    margin-top: 57.3px;
+  }
+
+  .faq__pergunta {
+    font-size: 18px;
+  }
+  .faq__pergunta > span:first-child {
+    flex: 1;
+  }
+
+  .faq__resposta > p {
+    font-size: 16px;
+  }
+
+  /* ---------- S8 — CTA final ---------- */
+  .s8 {
+    padding-block: 89px;
+  }
+
+  /* o card sangra até as bordas, como no Figma */
+  .s8 .container {
+    width: 100%;
+  }
+
+  .cta-final {
+    min-height: 616px;
+    padding: 40px 20px;
+    border-radius: 100px;
+  }
+
+  /* no mobile entra uma arte vertical própria (o recorte do frame mobile
+     do Figma), então o enquadramento já vem certo no arquivo */
+
+  .cta-final__conteudo {
+    width: 100%;
+  }
+  .cta-final__linha {
+    font-size: 21px;
+  }
+  .cta-final__destaque {
+    font-size: 36px;
+  }
+  .cta-final .btn {
+    width: 100%;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .rodape p {
+    font-size: 14px;
+    text-align: center;
+    padding-inline: 20px;
+  }
+}
+
+/* ---------- acessibilidade: movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
