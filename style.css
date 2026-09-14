@@ -145,14 +145,12 @@ b {
 .c-bordo {
   color: var(--bordo);
 }
-.c-branco {
-  color: var(--branco);
-}
+
 .c-preto {
   color: var(--preto);
 }
 .c-cinza600 {
-  color: var(--grey-600);
+  color: var(--branco);
 }
 
 /* ---------- Botão padrão ---------- */
