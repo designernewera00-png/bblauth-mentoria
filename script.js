@@ -43,6 +43,8 @@
   /* Âncoras internas passam pelo Lenis quando ele existe */
   function iniciarAncoras() {
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      /* CTAs abrem o pop up do formulário em vez de rolar */
+      if (link.hasAttribute('data-abrir-form')) return;
       link.addEventListener('click', function (e) {
         var alvo = document.querySelector(link.getAttribute('href'));
         if (!alvo) return;
@@ -333,6 +335,281 @@
   }
 
   /* ===============================================================
+     5b. POP UP DO FORMULÁRIO — aberto pelos botões CTA
+     Sem suporte a <dialog>, os CTAs mantêm o comportamento de âncora.
+     =============================================================== */
+  function iniciarFormPop() {
+    var pop = document.getElementById('form-pop');
+    var ctas = Array.prototype.slice.call(document.querySelectorAll('[data-abrir-form]'));
+    if (!pop || !ctas.length) return;
+
+    if (typeof pop.showModal !== 'function') {
+      ctas.forEach(function (cta) { cta.removeAttribute('data-abrir-form'); });
+      return;
+    }
+
+    var form = pop.querySelector('form');
+    var btnFechar = pop.querySelector('.form-pop__fechar');
+    var origem = null;
+
+    function abrir(cta) {
+      origem = cta;
+      pop.classList.remove('is-saindo');
+      pop.showModal();
+      pop.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      if (lenis) lenis.stop();
+    }
+
+    function fechar() {
+      if (!pop.open) return;
+      pop.classList.add('is-saindo');
+      setTimeout(function () {
+        pop.close();
+        pop.classList.remove('is-saindo');
+        document.body.style.overflow = '';
+        if (lenis) lenis.start();
+        if (origem) { origem.focus(); origem = null; }
+      }, reduzirMovimento ? 0 : 200);
+    }
+
+    ctas.forEach(function (cta) {
+      cta.addEventListener('click', function (e) {
+        e.preventDefault();
+        abrir(cta);
+      });
+    });
+
+    btnFechar.addEventListener('click', fechar);
+
+    /* clique no fundo (fora do card) fecha */
+    pop.addEventListener('click', function (e) {
+      if (e.target === pop) fechar();
+    });
+
+    pop.addEventListener('cancel', function (e) {
+      e.preventDefault();
+      fechar();
+    });
+
+    /* TODO: destino do envio ainda não definido */
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+    });
+  }
+
+  /* ===============================================================
+     5c. REGRAS DOS CAMPOS DO FORMULÁRIO
+     Nome: só letras (com acento) e espaço entre os nomes.
+     WhatsApp: máscara (DD) 99999-9999 — ou (DD) 9999-9999 pra fixo.
+     E-mail: formato nome@dominio.com.
+     As mensagens aparecem no balão nativo do navegador ao enviar.
+     =============================================================== */
+  function iniciarRegrasForm() {
+    var form = document.getElementById('form-mentoria');
+    if (!form) return;
+
+    var nome = form.querySelector('[data-regra="nome"]');
+    var zap = form.querySelector('[data-regra="whatsapp"]');
+    var email = form.querySelector('[data-regra="email"]');
+
+    /* letras com acento: À-Ö, Ø-ö, ø-ÿ (escritas em \u pra não depender
+       da codificação do arquivo) */
+    var LETRA = /[A-Za-zÀ-ÖØ-öø-ÿ]/;
+    var EMAIL = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
+
+    /* Troca o valor do campo sem jogar o cursor pro final: conta quantos
+       caracteres "que importam" havia antes do cursor e devolve o cursor
+       depois da mesma quantidade no valor novo. */
+    function reescrever(campo, novo, importa) {
+      var antigo = campo.value;
+      if (novo === antigo) return;
+      var cursor = campo.selectionStart == null ? antigo.length : campo.selectionStart;
+      var conta = 0;
+      for (var i = 0; i < cursor; i++) {
+        if (importa(antigo.charAt(i))) conta++;
+      }
+      campo.value = novo;
+      var pos = 0;
+      while (pos < novo.length && conta > 0) {
+        if (importa(novo.charAt(pos))) conta--;
+        pos++;
+      }
+      if (document.activeElement === campo) campo.setSelectionRange(pos, pos);
+    }
+
+    function soDigitos(v) { return v.replace(/\D/g, ''); }
+    function ehDigito(c) { return c >= '0' && c <= '9'; }
+
+    /* ---------- Nome ---------- */
+    if (nome) {
+      var ehLetraOuEspaco = function (c) { return c === ' ' || LETRA.test(c); };
+
+      var validarNome = function () {
+        var letras = nome.value.replace(/ /g, '').length;
+        nome.setCustomValidity(nome.value && letras < 2 ? 'Digite seu nome.' : '');
+      };
+
+      nome.addEventListener('input', function () {
+        var limpo = nome.value
+          .split('').filter(ehLetraOuEspaco).join('')
+          .replace(/ {2,}/g, ' ')
+          .replace(/^ /, '');
+        reescrever(nome, limpo, ehLetraOuEspaco);
+        validarNome();
+      });
+
+      nome.addEventListener('blur', function () {
+        nome.value = nome.value.trim();
+        validarNome();
+      });
+    }
+
+    /* ---------- WhatsApp ---------- */
+    if (zap) {
+      var formatarZap = function (digitos) {
+        /* colou com +55 na frente */
+        if (digitos.length > 11 && digitos.indexOf('55') === 0) digitos = digitos.slice(2);
+        digitos = digitos.slice(0, 11);
+        if (!digitos) return '';
+        if (digitos.length <= 2) return '(' + digitos;
+
+        var ddd = digitos.slice(0, 2);
+        var numero = digitos.slice(2);
+        if (numero.length <= 4) return '(' + ddd + ') ' + numero;
+
+        var corte = digitos.length === 11 ? 5 : 4;
+        return '(' + ddd + ') ' + numero.slice(0, corte) + '-' + numero.slice(corte);
+      };
+
+      var validarZap = function () {
+        var d = soDigitos(zap.value);
+        var msg = '';
+        if (d.length) {
+          if (d.length < 10) msg = 'Digite o WhatsApp completo com DDD.';
+          else if (!/^[1-9]{2}/.test(d)) msg = 'DDD inválido.';
+          else if (d.length === 11 && d.charAt(2) !== '9') msg = 'Número de celular inválido.';
+        }
+        zap.setCustomValidity(msg);
+      };
+
+      var digitosAntes = '';
+
+      zap.addEventListener('input', function (e) {
+        var cursor = zap.selectionStart == null ? zap.value.length : zap.selectionStart;
+        var d = soDigitos(zap.value);
+        var antes = soDigitos(zap.value.slice(0, cursor)).length;
+
+        /* Apagou só um "(", ")", espaço ou "-": sem isso a máscara
+           colocaria o símbolo de volta e o backspace travaria.
+           Nesse caso apaga o dígito vizinho. */
+        if (e.inputType && e.inputType.indexOf('delete') === 0 && d === digitosAntes) {
+          if (e.inputType === 'deleteContentBackward' && antes > 0) {
+            d = d.slice(0, antes - 1) + d.slice(antes);
+            antes--;
+          } else if (e.inputType === 'deleteContentForward' && antes < d.length) {
+            d = d.slice(0, antes) + d.slice(antes + 1);
+          }
+        }
+
+        var novo = formatarZap(d);
+        /* se o +55 foi removido, o cursor vai pro fim */
+        if (soDigitos(novo).length !== d.length) antes = soDigitos(novo).length;
+
+        zap.value = novo;
+        var pos = 0;
+        var conta = antes;
+        while (pos < novo.length && conta > 0) {
+          if (ehDigito(novo.charAt(pos))) conta--;
+          pos++;
+        }
+        if (document.activeElement === zap) zap.setSelectionRange(pos, pos);
+
+        digitosAntes = soDigitos(novo);
+        validarZap();
+      });
+
+      zap.addEventListener('blur', validarZap);
+    }
+
+    /* ---------- E-mail ---------- */
+    if (email) {
+      var validarEmail = function () {
+        var v = email.value;
+        email.setCustomValidity(v && !EMAIL.test(v) ? 'Digite um e-mail válido. Ex: nome@email.com' : '');
+      };
+
+      /* campo type="email" não permite mexer no cursor, então só limpa */
+      email.addEventListener('input', function () {
+        var semEspaco = email.value.replace(/\s/g, '');
+        if (semEspaco !== email.value) email.value = semEspaco;
+        validarEmail();
+      });
+
+      email.addEventListener('blur', validarEmail);
+    }
+
+    /* ---------- Todos obrigatórios: asterisco preto no que ficar vazio ----------
+       Cada campo ganha um invólucro com o asterisco; a legenda vem do
+       placeholder (ou da primeira opção, no dropdown). */
+    Array.prototype.slice.call(form.querySelectorAll('.form-pop__campo')).forEach(function (campo) {
+      campo.required = true;
+
+      var item = document.createElement('div');
+      item.className = 'form-pop__item';
+      if (campo.classList.contains('form-pop__campo--inteiro')) {
+        item.classList.add('form-pop__item--inteiro');
+      }
+
+      var legenda = campo.tagName === 'SELECT'
+        ? campo.options[0].textContent
+        : campo.getAttribute('placeholder');
+
+      var obrig = document.createElement('span');
+      obrig.className = 'form-pop__obrig';
+      obrig.setAttribute('aria-hidden', 'true');
+      obrig.innerHTML = '<span class="form-pop__obrig-texto"></span><span class="form-pop__obrig-marca">*</span>';
+      obrig.firstChild.textContent = legenda;
+
+      campo.parentNode.insertBefore(item, campo);
+      item.appendChild(campo);
+      item.appendChild(obrig);
+
+      function vazio() { return !campo.value.trim(); }
+
+      /* Mensagem de campo vazio em português: a padrão do navegador segue o
+         idioma dele (ex.: "Please fill out this field."). Roda depois das
+         regras de cada campo, que zeram a mensagem quando o campo está vazio.
+         Só espaços também conta como vazio. */
+      var MSG_VAZIO = campo.tagName === 'SELECT' ? 'Selecione uma opção.' : 'Preencha este campo.';
+      function mensagemVazio() {
+        if (vazio()) campo.setCustomValidity(MSG_VAZIO);
+        else if (campo.validationMessage === MSG_VAZIO) campo.setCustomValidity('');
+      }
+      mensagemVazio();
+      campo.addEventListener('input', mensagemVazio);
+      campo.addEventListener('change', mensagemVazio);
+      campo.addEventListener('blur', mensagemVazio);
+
+      /* ao tentar enviar, o navegador dispara 'invalid' em cada campo inválido */
+      campo.addEventListener('invalid', function () {
+        if (vazio()) {
+          item.classList.add('is-erro');
+          campo.setAttribute('aria-invalid', 'true');
+        }
+      });
+
+      function limpar() {
+        if (vazio()) return;
+        item.classList.remove('is-erro');
+        campo.removeAttribute('aria-invalid');
+      }
+      campo.addEventListener('input', limpar);
+      campo.addEventListener('change', limpar);
+    });
+  }
+
+  /* ===============================================================
      6. SECTION 7 — ACORDEÃO DO FAQ
      =============================================================== */
   function iniciarFaq() {
@@ -429,6 +706,8 @@
     iniciarCarrossel();
     iniciarDepoimentos();
     iniciarLightbox();
+    iniciarFormPop();
+    iniciarRegrasForm();
     iniciarFaq();
     iniciarAnimacoes();
   }

@@ -64,7 +64,7 @@
             </p>
           </div>
 
-          <a class="btn" href="#cta-final">
+          <a class="btn" href="#cta-final" data-abrir-form>
             <span>Quero entender como funciona</span>
             <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true">
           </a>
@@ -123,7 +123,7 @@
       </div>
 
       <div class="container">
-        <a class="btn s2__btn" href="#cta-final">
+        <a class="btn s2__btn" href="#cta-final" data-abrir-form>
           <span>SIM, QUERO FAZER PARTE DA MENTORIA!</span>
           <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
         </a>
@@ -255,7 +255,7 @@
           </article>
         </div>
 
-        <a class="btn s4__btn" href="#cta-final">
+        <a class="btn s4__btn" href="#cta-final" data-abrir-form>
           <span>quero participar da mentoria!</span>
           <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
         </a>
@@ -405,7 +405,7 @@
       </div>
 
       <div class="container">
-        <a class="btn s6__btn" href="#cta-final">
+        <a class="btn s6__btn" href="#cta-final" data-abrir-form>
           <span>Quero entender como funciona</span>
           <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
         </a>
@@ -519,7 +519,7 @@
               <p class="cta-final__destaque">Ou pode finalmente aprender a transformar o que você já sabe em um
                 negócio que sustenta a vida que você quer ter.</p>
             </div>
-            <a class="btn" href="#hero">
+            <a class="btn" href="#hero" data-abrir-form>
               <span>Quero fazer parte da mentoria</span>
               <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true" loading="lazy">
             </a>
@@ -548,6 +548,43 @@
       </svg>
     </button>
     <img class="lightbox__img" alt="">
+  </dialog>
+
+  <!-- ====================================================================
+       POP UP DO FORMULÁRIO — aberto pelos botões CTA (data-abrir-form)
+       ==================================================================== -->
+  <dialog class="form-pop" id="form-pop" aria-labelledby="form-pop-titulo" data-lenis-prevent>
+    <div class="form-pop__card" tabindex="-1" autofocus>
+      <button class="form-pop__fechar" type="button" aria-label="Fechar formulário">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+
+      <p class="form-pop__titulo" id="form-pop-titulo">Preencha o formulário abaixo:</p>
+
+      <form class="form-pop__form" id="form-mentoria">
+        <div class="form-pop__campos">
+          <input class="form-pop__campo" type="text" name="nome" placeholder="Seu Nome" aria-label="Seu Nome" autocomplete="name" autocapitalize="words" data-regra="nome" required>
+          <input class="form-pop__campo" type="tel" name="whatsapp" placeholder="Seu WhatsApp" aria-label="Seu WhatsApp" autocomplete="tel" inputmode="numeric" data-regra="whatsapp" required>
+          <input class="form-pop__campo" type="email" name="email" placeholder="Seu E-mail" aria-label="Seu E-mail" autocomplete="email" autocapitalize="off" spellcheck="false" data-regra="email" required>
+          <input class="form-pop__campo" type="text" name="area" placeholder="Sua área de atuação" aria-label="Sua área de atuação" required>
+          <input class="form-pop__campo form-pop__campo--inteiro" type="text" name="objetivo" placeholder="Seu principal objetivo" aria-label="Seu principal objetivo" required>
+          <select class="form-pop__campo form-pop__campo--inteiro form-pop__select" name="treinamento" aria-label="Treinamento individual ou em grupo?" required>
+            <!-- legenda: não pode ser escolhida nem aparece na lista -->
+            <option value="" disabled selected hidden>Treinamento individual ou em grupo?</option>
+            <option value="individual">Individual</option>
+            <option value="em-grupo">Em grupo</option>
+          </select>
+        </div>
+
+        <!-- TODO: definir o destino do envio (link ainda não definido) -->
+        <button class="btn form-pop__botao" type="submit">
+          <span>Fazer parte da mentoria</span>
+          <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+        </button>
+      </form>
+    </div>
   </dialog>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
