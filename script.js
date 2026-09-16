@@ -350,9 +350,31 @@
 
     var form = pop.querySelector('form');
     var btnFechar = pop.querySelector('.form-pop__fechar');
+    var titulo = pop.querySelector('.form-pop__titulo');
+    var sucesso = pop.querySelector('.form-pop__sucesso');
+    var aviso = pop.querySelector('.form-pop__aviso');
+    var botao = form.querySelector('.form-pop__botao');
+    var botaoTexto = botao.querySelector('.form-pop__botao-texto');
+    var TEXTO_BOTAO = botaoTexto.textContent;
     var origem = null;
+    var enviado = false;
+
+    /* depois de um envio, abrir de novo mostra o formulário limpo */
+    function reiniciar() {
+      enviado = false;
+      form.reset();
+      /* reaplica as mensagens de campo vazio das regras */
+      Array.prototype.forEach.call(form.querySelectorAll('.form-pop__campo'), function (campo) {
+        campo.dispatchEvent(new Event('change'));
+      });
+      form.hidden = false;
+      titulo.hidden = false;
+      sucesso.hidden = true;
+      aviso.hidden = true;
+    }
 
     function abrir(cta) {
+      if (enviado) reiniciar();
       origem = cta;
       pop.classList.remove('is-saindo');
       pop.showModal();
@@ -392,9 +414,47 @@
       fechar();
     });
 
-    /* TODO: destino do envio ainda não definido */
+    /* Envio: o navegador só dispara 'submit' com todos os campos válidos.
+       Os dados vão pra função /api/enviar (Vercel), que manda o e-mail
+       pelo Resend. */
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (botao.disabled) return;
+
+      var dados = {};
+      Array.prototype.forEach.call(form.elements, function (campo) {
+        if (campo.name) dados[campo.name] = campo.value;
+      });
+
+      botao.disabled = true;
+      botaoTexto.textContent = 'Enviando...';
+      aviso.hidden = true;
+
+      fetch('/api/enviar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      })
+        .then(function (resposta) {
+          return resposta.json().catch(function () { return {}; }).then(function (corpo) {
+            if (!resposta.ok || !corpo.ok) throw new Error(corpo.erro || 'Falha no envio');
+          });
+        })
+        .then(function () {
+          enviado = true;
+          form.hidden = true;
+          titulo.hidden = true;
+          sucesso.hidden = false;
+          pop.scrollTop = 0;
+        })
+        .catch(function () {
+          aviso.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente novamente.';
+          aviso.hidden = false;
+        })
+        .then(function () {
+          botao.disabled = false;
+          botaoTexto.textContent = TEXTO_BOTAO;
+        });
     });
   }
 

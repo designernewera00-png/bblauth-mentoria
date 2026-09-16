@@ -578,12 +578,24 @@
           </select>
         </div>
 
-        <!-- TODO: definir o destino do envio (link ainda não definido) -->
+        <!-- campo-isca contra robôs: fica escondido, pessoas não preenchem -->
+        <div class="form-pop__isca" aria-hidden="true">
+          <label>Não preencha este campo <input type="text" name="site" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <!-- os dados vão para /api/enviar (Vercel + Resend) -->
         <button class="btn form-pop__botao" type="submit">
-          <span>Fazer parte da mentoria</span>
+          <span class="form-pop__botao-texto">Fazer parte da mentoria</span>
           <img class="btn__icon" src="Assets/icons/arrow-right.svg" alt="" aria-hidden="true">
         </button>
+
+        <p class="form-pop__aviso" role="alert" hidden></p>
       </form>
+
+      <div class="form-pop__sucesso" hidden>
+        <p class="form-pop__sucesso-titulo">Formulário enviado!</p>
+        <p class="form-pop__sucesso-texto">Entraremos em contato com você em breve.</p>
+      </div>
     </div>
   </dialog>
 
