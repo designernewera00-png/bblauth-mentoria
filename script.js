@@ -338,6 +338,30 @@
      5b. POP UP DO FORMULÁRIO — aberto pelos botões CTA
      Sem suporte a <dialog>, os CTAs mantêm o comportamento de âncora.
      =============================================================== */
+  /* Copia as UTMs do link (?utm_source=...) para os campos ocultos do
+     formulário. Guarda na sessão pra não perder se a pessoa recarregar
+     a página sem os parâmetros. */
+  function preencherUtms(form) {
+    var CHAVES = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    var params = new URLSearchParams(location.search);
+    var temNoLink = CHAVES.some(function (k) { return params.get(k); });
+    var utms = {};
+
+    if (temNoLink) {
+      CHAVES.forEach(function (k) { utms[k] = params.get(k) || ''; });
+      try { sessionStorage.setItem('utms', JSON.stringify(utms)); } catch (e) {}
+    } else {
+      try { utms = JSON.parse(sessionStorage.getItem('utms')) || {}; } catch (e) {}
+    }
+
+    CHAVES.forEach(function (k) {
+      var campo = form.elements[k];
+      /* em input hidden, .value também vira o valor padrão,
+         então o form.reset() não apaga */
+      if (campo && utms[k]) campo.value = String(utms[k]).slice(0, 200);
+    });
+  }
+
   function iniciarFormPop() {
     var pop = document.getElementById('form-pop');
     var ctas = Array.prototype.slice.call(document.querySelectorAll('[data-abrir-form]'));
@@ -358,6 +382,8 @@
     var TEXTO_BOTAO = botaoTexto.textContent;
     var origem = null;
     var enviado = false;
+
+    preencherUtms(form);
 
     /* depois de um envio, abrir de novo mostra o formulário limpo */
     function reiniciar() {
@@ -442,6 +468,9 @@
         })
         .then(function () {
           enviado = true;
+          /* evento pro Google Tag Manager marcar a conversão */
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'lead_enviado', treinamento: dados.treinamento });
           form.hidden = true;
           titulo.hidden = true;
           sucesso.hidden = false;

@@ -4,6 +4,7 @@
 
    Variável de ambiente no Vercel:
      RESEND_API_KEY  chave da API do Resend
+     WEBHOOK_URL     URL do webhook do Make que recebe cada lead
 
    Remetente: sem domínio verificado no Resend, só dá pra enviar de
    onboarding@resend.dev e apenas para o e-mail dono da conta. Quando
@@ -38,7 +39,13 @@ function validar(corpo) {
     email: texto(corpo.email, 160),
     area: texto(corpo.area, 200),
     objetivo: texto(corpo.objetivo, 1000),
-    treinamento: TREINAMENTOS[corpo.treinamento] || ''
+    treinamento: TREINAMENTOS[corpo.treinamento] || '',
+    /* UTMs dos campos ocultos: opcionais, vêm vazias no acesso direto */
+    utm_source: texto(corpo.utm_source, 200),
+    utm_medium: texto(corpo.utm_medium, 200),
+    utm_campaign: texto(corpo.utm_campaign, 200),
+    utm_term: texto(corpo.utm_term, 200),
+    utm_content: texto(corpo.utm_content, 200)
   };
 
   var digitos = dados.whatsapp.replace(/\D/g, '');
@@ -91,6 +98,15 @@ module.exports = async function handler(req, res) {
     ['Treinamento', dados.treinamento]
   ];
 
+  /* no e-mail, só as UTMs que vieram preenchidas */
+  [
+    ['UTM source', dados.utm_source],
+    ['UTM medium', dados.utm_medium],
+    ['UTM campaign', dados.utm_campaign],
+    ['UTM term', dados.utm_term],
+    ['UTM content', dados.utm_content]
+  ].forEach(function (l) { if (l[1]) linhas.push(l); });
+
   var digitos = dados.whatsapp.replace(/\D/g, '');
   var linkZap = 'https://wa.me/55' + digitos;
 
@@ -116,6 +132,10 @@ module.exports = async function handler(req, res) {
     linhas.map(function (l) { return l[0] + ': ' + l[1]; }).join('\n') +
     '\n\nWhatsApp: ' + linkZap;
 
+  /* dispara o webhook junto com o e-mail; se ele falhar, o lead
+     continua chegando por e-mail e a pessoa vê a tela de sucesso */
+  var webhook = enviarWebhook(dados, linkZap);
+
   try {
     var resposta = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -133,6 +153,10 @@ module.exports = async function handler(req, res) {
       })
     });
 
+    /* espera o webhook terminar: no Vercel a função é encerrada
+       assim que a resposta sai */
+    await webhook;
+
     if (!resposta.ok) {
       console.error('Resend recusou o envio:', resposta.status, await resposta.text());
       return res.status(502).json({ ok: false, erro: 'Não foi possível enviar agora.' });
@@ -140,7 +164,50 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ ok: true });
   } catch (erro) {
+    await webhook;
     console.error('Falha ao falar com o Resend:', erro);
     return res.status(502).json({ ok: false, erro: 'Não foi possível enviar agora.' });
   }
 };
+
+/* manda o lead em JSON para WEBHOOK_URL (webhook do Make).
+   A URL fica só no Vercel: quem tem ela consegue mandar dados pro
+   cenário, então não vai pro código. Sem ela, não faz nada.
+   Nunca lança erro. */
+async function enviarWebhook(dados, linkZap) {
+  var url = process.env.WEBHOOK_URL;
+  if (!url) {
+    console.warn('WEBHOOK_URL não configurada no Vercel; lead não enviado ao Make.');
+    return;
+  }
+
+  try {
+    var resposta = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nome: dados.nome,
+        whatsapp: dados.whatsapp,
+        email: dados.email,
+        area: dados.area,
+        objetivo: dados.objetivo,
+        treinamento: dados.treinamento,
+        link_whatsapp: linkZap,
+        utm_source: dados.utm_source,
+        utm_medium: dados.utm_medium,
+        utm_campaign: dados.utm_campaign,
+        utm_term: dados.utm_term,
+        utm_content: dados.utm_content,
+        origem: 'Site Mentoria Abdômen Lucrativo',
+        enviado_em: new Date().toISOString()
+      }),
+      signal: AbortSignal.timeout(5000)
+    });
+
+    if (!resposta.ok) {
+      console.error('Webhook recusou o lead:', resposta.status, await resposta.text());
+    }
+  } catch (erro) {
+    console.error('Falha ao chamar o webhook:', erro);
+  }
+}
