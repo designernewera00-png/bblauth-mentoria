@@ -1777,6 +1777,49 @@ b {
 }
 
 /* =================================================================
+   12b. PÁGINA DE OBRIGADO (obrigado.html)
+   Mensagem centralizada ocupando a tela, rodapé embaixo.
+   ================================================================= */
+.pagina-obrigado {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.obrigado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.obrigado__titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1.1;
+  color: var(--bordo);
+}
+
+.obrigado__texto {
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .obrigado__titulo {
+    font-size: 40px;
+  }
+  .obrigado__texto {
+    font-size: 16px;
+  }
+}
+
+/* =================================================================
    13. ANIMAÇÕES DE SCROLL
    Esconde os elementos animados ANTES do GSAP assumir, pra não haver
    "pisca". A classe .anim é posta por um script no <head> e removida

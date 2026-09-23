@@ -468,13 +468,25 @@
         })
         .then(function () {
           enviado = true;
-          /* evento pro Google Tag Manager marcar a conversão */
+          /* Evento pro Google Tag Manager marcar a conversão. Só vai pra
+             página de obrigado depois que as tags dispararem (eventCallback);
+             se o GTM estiver bloqueado, o limite de 2s garante o redirecionamento. */
+          var redirecionou = false;
+          var irParaObrigado = function () {
+            if (redirecionou) return;
+            redirecionou = true;
+            window.location.href = '/obrigado.html';
+          };
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: 'lead_enviado', treinamento: dados.treinamento });
-          form.hidden = true;
-          titulo.hidden = true;
-          sucesso.hidden = false;
-          pop.scrollTop = 0;
+          window.dataLayer.push({
+            event: 'lead_enviado',
+            treinamento: dados.treinamento,
+            eventCallback: irParaObrigado,
+            eventTimeout: 2000
+          });
+          setTimeout(irParaObrigado, 2000);
+          /* mantém "Enviando..." até a página trocar */
+          return new Promise(function () {});
         })
         .catch(function () {
           aviso.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente novamente.';
